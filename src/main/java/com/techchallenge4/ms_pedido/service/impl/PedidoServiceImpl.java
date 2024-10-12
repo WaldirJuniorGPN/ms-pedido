@@ -8,6 +8,7 @@ import com.techchallenge4.ms_pedido.controller.request.PedidoRequest;
 import com.techchallenge4.ms_pedido.controller.response.PedidoResponse;
 import com.techchallenge4.ms_pedido.exception.PedidoExceptionHandler;
 import com.techchallenge4.ms_pedido.model.Pedido;
+import com.techchallenge4.ms_pedido.model.enums.PedidoStatus;
 import com.techchallenge4.ms_pedido.repository.PedidoRepository;
 import com.techchallenge4.ms_pedido.service.PedidoService;
 import jakarta.transaction.Transactional;
@@ -70,6 +71,27 @@ public class PedidoServiceImpl implements PedidoService {
                 PEDIDO_NAO_ENCONTRADO, "buscarPorId", "/pedidos/{id}"));
 
         return buildPedidoResponse(pedido);
+    }
+
+    @Override
+    public PedidoResponse atualizarStatus(Long id, PedidoStatus status) {
+
+        var pedido = pedidoRepository.findById(id).orElseThrow(() -> new PedidoExceptionHandler(
+                PEDIDO_NAO_ENCONTRADO, "atualizarStatus", "/pedidos/{id}/status/{status}"));
+
+        pedido.setStatus(status);
+
+        pedido = pedidoRepository.save(pedido);
+
+        return buildPedidoResponse(pedido);
+    }
+
+    @Override
+    public PagedModel<PedidoResponse> listarPorCliente(Long clienteId, int pagina, int tamanho) {
+
+        var pedidos = pedidoRepository.findAllByClienteId(clienteId, PageRequest.of(pagina, tamanho));
+
+        return new PagedModel<>(buildPedidoResponse(pedidos));
     }
 
     private static PedidoResponse buildPedidoResponse(Pedido pedido) {

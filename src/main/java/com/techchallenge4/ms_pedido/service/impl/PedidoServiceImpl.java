@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import static com.techchallenge4.ms_pedido.exception.PedidoErrorCode.PEDIDO_NAO_ENCONTRADO;
 import static com.techchallenge4.ms_pedido.exception.PedidoErrorCode.PRODUTO_SEM_ESTOQUE;
 import static com.techchallenge4.ms_pedido.model.enums.PedidoStatus.PREPARANDO;
 
@@ -60,6 +61,15 @@ public class PedidoServiceImpl implements PedidoService {
         var pedidos = pedidoRepository.findAll(PageRequest.of(pagina, tamanho));
 
         return new PagedModel<>(buildPedidoResponse(pedidos));
+    }
+
+    @Override
+    public PedidoResponse buscarPorId(Long id) {
+
+        var pedido = pedidoRepository.findById(id).orElseThrow(() -> new PedidoExceptionHandler(
+                PEDIDO_NAO_ENCONTRADO, "buscarPorId", "/pedidos/{id}"));
+
+        return buildPedidoResponse(pedido);
     }
 
     private static PedidoResponse buildPedidoResponse(Pedido pedido) {

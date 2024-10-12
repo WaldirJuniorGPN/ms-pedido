@@ -11,4 +11,5 @@ public interface PedidoService {
 
     PagedModel<PedidoResponse> listarTodos(int pagina, int tamanho);
 
+    PedidoResponse buscarPorId(Long id);
 }

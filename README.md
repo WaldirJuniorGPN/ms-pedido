@@ -24,7 +24,7 @@ Além disso, o serviço lida com o processamento de pagamentos (se aplicável), 
 
 ### Pré-requisitos
 
-- Java 17+
+- Java 21+
 - Docker (opcional, se preferir usar contêineres para o banco de dados)
 
 ### Passos

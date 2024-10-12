@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: ms-pedido
+
+  profiles:
+    active: "local"
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}}/pedido
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQLDialect

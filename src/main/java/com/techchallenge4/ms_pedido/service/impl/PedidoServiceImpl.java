@@ -13,6 +13,8 @@ import com.techchallenge4.ms_pedido.service.PedidoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -50,6 +52,14 @@ public class PedidoServiceImpl implements PedidoService {
         conexaoProduto.atualizarQuantidadeEstoqueProduto(produtoResponse.id(), request.quantidade());
 
         return pedidoResponse;
+    }
+
+    @Override
+    public PagedModel<PedidoResponse> listarTodos(int pagina, int tamanho) {
+
+        var pedidos = pedidoRepository.findAll(PageRequest.of(pagina, tamanho));
+
+        return new PagedModel<>(buildPedidoResponse(pedidos));
     }
 
     private static PedidoResponse buildPedidoResponse(Pedido pedido) {

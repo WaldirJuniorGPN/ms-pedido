@@ -8,7 +8,7 @@ import org.springframework.data.web.PagedModel;
 
 public interface PedidoService {
 
-    PedidoResponse create(PedidoRequest request);
+    PedidoResponse salvar(PedidoRequest request);
 
     PagedModel<PedidoResponse> listarTodos(int pagina, int tamanho);
 
@@ -17,4 +17,6 @@ public interface PedidoService {
     PedidoResponse atualizarStatus(Long id, PedidoStatus status);
 
     PagedModel<PedidoResponse> listarPorCliente(Long clienteId, int pagina, int tamanho);
+
+    void recebe(PedidoRequest request);
 }

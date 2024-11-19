@@ -13,9 +13,12 @@ import com.techchallenge4.ms_pedido.repository.PedidoRepository;
 import com.techchallenge4.ms_pedido.service.PedidoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PagedModel;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +27,7 @@ import static com.techchallenge4.ms_pedido.exception.PedidoErrorCode.PEDIDO_NAO_
 import static com.techchallenge4.ms_pedido.exception.PedidoErrorCode.PRODUTO_SEM_ESTOQUE;
 import static com.techchallenge4.ms_pedido.model.enums.PedidoStatus.PREPARANDO;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PedidoServiceImpl implements PedidoService {
@@ -34,16 +38,16 @@ public class PedidoServiceImpl implements PedidoService {
 
     private final PedidoRepository pedidoRepository;
 
+    private final StreamBridge streamBridge;
+
     @Override
     @Transactional
-    public PedidoResponse create(PedidoRequest request) {
-
+    public PedidoResponse salvar(PedidoRequest request) {
+        log.warn("PedidoServiceImpl.salvar: {}", request);
         var clienteResponse = conexaoCliente.buscarClientePorId(request.usuarioId());
 
         var produtoResponse = conexaoProduto.buscarProdutoPorId(request.produtoId());
-        if (produtoResponse.quantidadeEstoque() <= 0 || getQuantidadeTotal(request, produtoResponse) < 0) {
-            throw new PedidoExceptionHandler(PRODUTO_SEM_ESTOQUE, "create", "/pedidos");
-        }
+        validacaoProdutoDisponivelEstoque(request, produtoResponse, "salvar");
 
         var pedido = buildPedido(request, clienteResponse, produtoResponse);
 
@@ -55,6 +59,8 @@ public class PedidoServiceImpl implements PedidoService {
 
         return pedidoResponse;
     }
+
+
 
     @Override
     public PagedModel<PedidoResponse> listarTodos(int pagina, int tamanho) {
@@ -92,6 +98,24 @@ public class PedidoServiceImpl implements PedidoService {
         var pedidos = pedidoRepository.findAllByClienteId(clienteId, PageRequest.of(pagina, tamanho));
 
         return new PagedModel<>(buildPedidoResponse(pedidos));
+    }
+
+    @Override
+    public void recebe(PedidoRequest request) {
+
+        conexaoCliente.buscarClientePorId(request.usuarioId());
+
+        var produtoResponse = conexaoProduto.buscarProdutoPorId(request.produtoId());
+
+        validacaoProdutoDisponivelEstoque(request, produtoResponse, "recebe");
+
+        streamBridge.send("pedidoQueue", new GenericMessage<>(request));
+    }
+
+    private void validacaoProdutoDisponivelEstoque(PedidoRequest request, ProdutoResponse produtoResponse, String metodo) {
+        if (produtoResponse.quantidadeEstoque() <= 0 || getQuantidadeTotal(request, produtoResponse) < 0) {
+            throw new PedidoExceptionHandler(PRODUTO_SEM_ESTOQUE, metodo, "/pedidos");
+        }
     }
 
     private static PedidoResponse buildPedidoResponse(Pedido pedido) {

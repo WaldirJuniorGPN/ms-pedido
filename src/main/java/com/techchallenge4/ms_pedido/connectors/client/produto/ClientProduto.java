@@ -1,6 +1,6 @@
 package com.techchallenge4.ms_pedido.connectors.client.produto;
 
-import com.techchallenge4.ms_pedido.config.FeignConfig;
+import com.techchallenge4.ms_pedido.config.feign.FeignConfig;
 import com.techchallenge4.ms_pedido.connectors.produto.response.ProdutoResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;

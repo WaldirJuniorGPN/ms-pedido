@@ -14,16 +14,15 @@ spring:
     hibernate:
       dialect: org.hibernate.dialect.MySQLDialect
 
-  cloud:
-    stream:
-      bindings:
-        pedidoConsumer-in-0:
-          destination: pedidoQueue
-          group: criar
-          content-type: application/json
-
   rabbitmq:
     host: ${RABBITMQ_HOST}
     port: ${RABBITMQ_PORT}
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 10
+          initial-interval: 1000
+          multiplier: 2

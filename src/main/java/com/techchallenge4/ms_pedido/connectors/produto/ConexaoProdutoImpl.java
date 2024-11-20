@@ -37,7 +37,7 @@ public class ConexaoProdutoImpl implements ConexaoProduto {
         try {
           clientProduto.atualizarQuantidadeEstoqueProduto(id, quantidade);
         } catch (FeignException.BadRequest e) {
-            log.warn("Erro ao atualizar estoque. Message = {}", e.getMessage());
+            log.error("Erro ao atualizar estoque. Message = {}", e.getMessage());
             throw new PedidoExceptionHandler(PRODUTO_SEM_ESTOQUE, "atualizarQuantidadeEstoqueProduto", ROOT_PATH + id);
         }
     }

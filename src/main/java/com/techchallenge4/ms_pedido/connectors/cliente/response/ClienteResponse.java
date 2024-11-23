@@ -1,4 +1,4 @@
-package com.techchallenge4.ms_pedido.connectors.usuario.response;
+package com.techchallenge4.ms_pedido.connectors.cliente.response;
 
 public record ClienteResponse(
         Long id,

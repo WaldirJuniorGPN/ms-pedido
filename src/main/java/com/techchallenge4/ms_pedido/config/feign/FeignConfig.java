@@ -1,4 +1,4 @@
-package com.techchallenge4.ms_pedido.config;
+package com.techchallenge4.ms_pedido.config.feign;
 
 import feign.Client;
 import feign.Logger;

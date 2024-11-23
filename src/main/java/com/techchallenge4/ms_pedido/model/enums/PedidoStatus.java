@@ -2,9 +2,10 @@ package com.techchallenge4.ms_pedido.model.enums;
 
 public enum PedidoStatus {
 
-    PREPARANDO,
-    SAIU_PARA_ENTREGA,
+    PENDENTE,
+    EM_ROTA,
+    TENTATIVA_ENTREGA,
     ENTREGUE,
-    CANCELADO;
+    CANCELADA
 
 }

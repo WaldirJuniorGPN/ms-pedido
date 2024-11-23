@@ -13,3 +13,21 @@ spring:
   jpa:
     hibernate:
       dialect: org.hibernate.dialect.MySQLDialect
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 10
+          initial-interval: 1000
+          multiplier: 2
+
+cliente:
+  url: http://localhost:3002
+produto:
+  url: http://localhost:3002

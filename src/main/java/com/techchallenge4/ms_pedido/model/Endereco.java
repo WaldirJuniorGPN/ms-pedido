@@ -1,6 +1,6 @@
 package com.techchallenge4.ms_pedido.model;
 
-import com.techchallenge4.ms_pedido.model.enums.PedidoStatus;
+import com.techchallenge4.ms_pedido.model.enums.EstadoEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,41 +15,46 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Data
-@Builder
+@Table(name = "enderecos")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "pedidos")
-public class Pedido {
+@Data
+@Builder
+public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cliente_id", nullable = false)
-    private Long clienteId;
+    @Column(nullable = false)
+    private String logradouro;
+
+    private String numero;
+
+    @Column(nullable = false)
+    private String complemento;
+
+    @Column(nullable = false)
+    private String bairro;
+
+    @Column(nullable = false)
+    private String cidade;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private PedidoStatus status;
-
-    @Column(name = "produto_id", nullable = false)
-    private Long produtoId;
+    private EstadoEnum uf;
 
     @Column(nullable = false)
-    private Integer quantidade;
+    private String cep;
 
-    @Column(name = "data_hora_criacao", nullable = false)
-    private LocalDateTime dataHoraCriacao;
+    @Column(nullable = false)
+    private String latitude;
 
-    @OneToOne
-    private Endereco endereco;
+    @Column(nullable = false)
+    private String logitude;
 
-    public Pedido (Long id) {
-        this.id = id;
-    }
+    @OneToOne(mappedBy = "endereco")
+    private Pedido pedido;
 
 }

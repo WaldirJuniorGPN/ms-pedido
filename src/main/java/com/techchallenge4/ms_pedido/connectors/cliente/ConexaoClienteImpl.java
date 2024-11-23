@@ -1,7 +1,7 @@
-package com.techchallenge4.ms_pedido.connectors.usuario;
+package com.techchallenge4.ms_pedido.connectors.cliente;
 
-import com.techchallenge4.ms_pedido.connectors.client.usuario.ClientCliente;
-import com.techchallenge4.ms_pedido.connectors.usuario.response.ClienteResponse;
+import com.techchallenge4.ms_pedido.connectors.client.cliente.ClientCliente;
+import com.techchallenge4.ms_pedido.connectors.cliente.response.ClienteResponse;
 import com.techchallenge4.ms_pedido.exception.PedidoExceptionHandler;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;

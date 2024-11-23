@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Optional;
 
 @Component
-@FeignClient(name = "produto", url = "http://localhost:3002", configuration = FeignConfig.class)
+@FeignClient(name = "produto", url = "${produto.url}", configuration = FeignConfig.class)
 public interface ClientProduto {
 
     @GetMapping("/produtos/{id}")

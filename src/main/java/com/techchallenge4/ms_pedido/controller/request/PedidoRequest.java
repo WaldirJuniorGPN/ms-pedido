@@ -7,12 +7,13 @@ public record PedidoRequest(
 
         @NotNull
         @Positive
-        Long usuarioId,
+        Long clienteId,
 
         @NotNull
         @Positive
         Long produtoId,
 
         @NotNull
+        @Positive
         Integer quantidade
 ) {}

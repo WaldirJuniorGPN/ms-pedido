@@ -26,3 +26,8 @@ spring:
           max-attempts: 10
           initial-interval: 1000
           multiplier: 2
+
+cliente:
+  url: http://localhost:3002
+produto:
+  url: http://localhost:3002

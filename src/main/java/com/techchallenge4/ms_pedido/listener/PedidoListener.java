@@ -15,10 +15,10 @@ public class PedidoListener {
     private final PedidoService pedidoService;
 
     @RabbitListener(queues = "pedidoQueue.criar")
-    public void criarPedido(PedidoRequest request) {
+    public void criarPedido(PedidoRequest pedidoRequest) {
         log.info("stage=init method=PedidoListener.criarPedido");
         try {
-            pedidoService.salvar(request);
+            pedidoService.salvar(pedidoRequest);
             log.info("stage=finish method=PedidoListener.criarPedido");
         } catch (Exception e) {
             log.error(e.getMessage());

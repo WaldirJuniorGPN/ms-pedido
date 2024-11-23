@@ -26,7 +26,7 @@ public class ConexaoProdutoImpl implements ConexaoProduto {
             return clientProduto.buscarPorId(id).orElseThrow(() -> new PedidoExceptionHandler(
                     PRODUTO_NAO_ENCONTRADO, "buscarProdutoPorId", ROOT_PATH + id));
         } catch (FeignException.NotFound e) {
-            log.warn("Produto não encontrado. Message = {}", e.getMessage());
+            log.error("Produto não encontrado. Message = {}", e.getMessage());
             throw new PedidoExceptionHandler(PRODUTO_NAO_ENCONTRADO, "buscarProdutoPorId", ROOT_PATH + id);
         }
     }

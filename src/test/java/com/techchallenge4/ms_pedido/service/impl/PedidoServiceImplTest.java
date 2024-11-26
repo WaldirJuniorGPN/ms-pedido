@@ -14,10 +14,11 @@ import com.techchallenge4.ms_pedido.model.Pedido;
 import com.techchallenge4.ms_pedido.model.dto.PedidoDTO;
 import com.techchallenge4.ms_pedido.repository.EnderecoRepository;
 import com.techchallenge4.ms_pedido.repository.PedidoRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -57,8 +58,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
+@ExtendWith(MockitoExtension.class)
 class PedidoServiceImplTest {
 
     @InjectMocks
@@ -88,11 +89,6 @@ class PedidoServiceImplTest {
     @Mock
     private PedidoAdapter pedidoAdapter;
 
-    @BeforeEach
-    void setUp() {
-        openMocks(this);
-    }
-
 
     @Test
     void testaRecebeComSucesso() {
@@ -104,7 +100,7 @@ class PedidoServiceImplTest {
 
         when(conexaoCliente.buscarClientePorId(request.clienteId())).thenReturn(clienteResponse);
         when(conexaoProduto.buscarProdutoPorId(anyLong())).thenReturn(produtoResponse);
-        doNothing().when(rabbitTemplate).convertAndSend(anyString(), any(PedidoRequest.class));
+        doNothing().when(rabbitTemplate).convertAndSend(anyString(), any(PedidoDTO.class));
 
         pedidoService.recebe(clienteId, request);
 

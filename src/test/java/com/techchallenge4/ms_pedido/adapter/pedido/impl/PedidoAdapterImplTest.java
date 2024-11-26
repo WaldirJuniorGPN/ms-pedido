@@ -1,14 +1,12 @@
 package com.techchallenge4.ms_pedido.adapter.pedido.impl;
 
-import com.techchallenge4.ms_pedido.model.Pedido;
 import com.techchallenge4.ms_pedido.model.dto.PedidoDTO;
-import com.techchallenge4.ms_pedido.model.enums.PedidoStatus;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 
@@ -18,17 +16,12 @@ import static com.techchallenge4.ms_pedido.mockDados.ProdutoResponseMock.getProd
 import static com.techchallenge4.ms_pedido.model.enums.PedidoStatus.PENDENTE;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.MockitoAnnotations.openMocks;
 
+@ExtendWith(MockitoExtension.class)
 class PedidoAdapterImplTest {
 
     @InjectMocks
     private PedidoAdapterImpl pedidoAdapterImpl;
-
-    @BeforeEach
-    void setUp() {
-        openMocks(this);
-    }
 
     LocalDateTime date = LocalDateTime.parse("2021-10-01T10:10:10");
 

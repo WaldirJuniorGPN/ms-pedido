@@ -42,6 +42,6 @@ public enum UfEnum {
     // Região Sul
     PR,
     SC,
-    RS;
+    RS
 
 }

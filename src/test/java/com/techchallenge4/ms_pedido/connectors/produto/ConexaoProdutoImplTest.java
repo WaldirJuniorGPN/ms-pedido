@@ -5,7 +5,6 @@ import com.techchallenge4.ms_pedido.exception.PedidoExceptionHandler;
 import feign.FeignException;
 import feign.Request;
 import feign.Util;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,8 +23,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
+@ExtendWith(MockitoExtension.class)
 class ConexaoProdutoImplTest {
 
     @InjectMocks
@@ -33,11 +32,6 @@ class ConexaoProdutoImplTest {
 
     @Mock
     private ClientProduto clientProduto;
-
-    @BeforeEach
-    void setUp() {
-        openMocks(this);
-    }
 
     @Test
     void testaBuscarProdutoPorIdSucesso() {

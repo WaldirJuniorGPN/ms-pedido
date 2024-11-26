@@ -1,25 +1,19 @@
 package com.techchallenge4.ms_pedido.adapter.enderecoResponse.impl;
 
-import com.techchallenge4.ms_pedido.connectors.cliente.response.EnderecoResponse;
-import com.techchallenge4.ms_pedido.model.enums.UfEnum;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.techchallenge4.ms_pedido.mockDados.EnderecoMock.getEndereco1;
 import static com.techchallenge4.ms_pedido.model.enums.UfEnum.PE;
-import static org.mockito.MockitoAnnotations.openMocks;
 
+@ExtendWith(MockitoExtension.class)
 class EnderecoResponseAdapterImplTest {
 
     @InjectMocks
     private EnderecoResponseAdapterImpl enderecoResponseAdapterImpl;
-
-    @BeforeEach
-    void setUp() {
-        openMocks(this);
-    }
 
     @Test
     void testaBuildEnderecoResponse() {

@@ -2,10 +2,11 @@ package com.techchallenge4.ms_pedido.adapter.pedidoResponse.impl;
 
 import com.techchallenge4.ms_pedido.adapter.enderecoResponse.EnderecoResponseAdapter;
 import com.techchallenge4.ms_pedido.mockDados.EnderecoResponseMock;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 
 import java.time.LocalDateTime;
@@ -19,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
+@ExtendWith(MockitoExtension.class)
 class PedidoResponseAdapterImplTest {
 
     @InjectMocks
@@ -28,11 +29,6 @@ class PedidoResponseAdapterImplTest {
 
     @Mock
     private EnderecoResponseAdapter enderecoResponseAdapter;
-
-    @BeforeEach
-    void setUp() {
-        openMocks(this);
-    }
 
     @Test
     void testarBuildPedidoResponse() {

@@ -1,6 +1,6 @@
 package com.techchallenge4.ms_pedido.connectors.cliente.response;
 
-import com.techchallenge4.ms_pedido.model.enums.EstadoEnum;
+import com.techchallenge4.ms_pedido.model.enums.UfEnum;
 
 public record EnderecoResponse(
         String cep,
@@ -11,6 +11,6 @@ public record EnderecoResponse(
         String cidade,
         String latitude,
         String longitude,
-        EstadoEnum estado
+        UfEnum uf
 ) {
 }

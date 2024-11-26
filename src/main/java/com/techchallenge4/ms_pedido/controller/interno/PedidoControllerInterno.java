@@ -1,7 +1,7 @@
 package com.techchallenge4.ms_pedido.controller.interno;
 
 import com.techchallenge4.ms_pedido.controller.response.PedidoResponse;
-import com.techchallenge4.ms_pedido.model.enums.EstadoEnum;
+import com.techchallenge4.ms_pedido.model.enums.UfEnum;
 import com.techchallenge4.ms_pedido.model.enums.PedidoStatus;
 import com.techchallenge4.ms_pedido.service.PedidoService;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +25,20 @@ public class PedidoControllerInterno {
     @GetMapping
     public ResponseEntity<List<PedidoResponse>> listarPedidosPorStatusEUf(
             @RequestParam PedidoStatus status,
-            @RequestParam EstadoEnum uf) {
+            @RequestParam UfEnum uf) {
 
         var pedidoResponses = pedidoService.listarPedidosPorStatusEUf(status,uf);
 
         return ResponseEntity.ok(pedidoResponses);
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PedidoResponse> buscarPorId(@PathVariable Long id) {
+
+        var pedidoResponse = pedidoService.buscarPorId(id);
+
+        return ResponseEntity.ok(pedidoResponse);
     }
 
     @PatchMapping("/{id}/status/{status}")

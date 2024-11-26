@@ -1,6 +1,6 @@
 package com.techchallenge4.ms_pedido.model;
 
-import com.techchallenge4.ms_pedido.model.enums.EstadoEnum;
+import com.techchallenge4.ms_pedido.model.enums.UfEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -43,7 +43,7 @@ public class Endereco {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private EstadoEnum uf;
+    private UfEnum uf;
 
     @Column(nullable = false)
     private String cep;
@@ -52,7 +52,7 @@ public class Endereco {
     private String latitude;
 
     @Column(nullable = false)
-    private String logitude;
+    private String longitude;
 
     @OneToOne(mappedBy = "endereco")
     private Pedido pedido;

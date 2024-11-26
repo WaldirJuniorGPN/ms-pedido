@@ -14,13 +14,7 @@ public interface PedidoService {
 
     void salvar(PedidoDTO pedidoDTO);
 
-    PedidoResponse buscarPorId(Long id);
-
-    PedidoResponse atualizarStatus(Long id, PedidoStatus status);
-
     PagedModel<PedidoResponse> listarPorCliente(Long clienteId, int pagina, int tamanho);
 
     void recebe(Long clienteId, PedidoRequest request);
-
-    List<PedidoResponse> listarPedidosPorStatusEUf(PedidoStatus status, UfEnum uf);
 }

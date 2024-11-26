@@ -90,41 +90,6 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public List<PedidoResponse> listarPedidosPorStatusEUf(PedidoStatus status,
-                                                          UfEnum uf) {
-
-        log.info("estado=init metodo=PedidoServiceImpl.listarPedidosPorUfEStatus");
-        var pedidos = pedidoRepository.findAllByStatusAndEndereco_Uf(status, uf);
-
-        log.info("estado=finish metodo=PedidoServiceImpl.listarPedidosPorUfEStatus");
-        return pedidoResponseAdapter.buildPedidoResponse(pedidos);
-    }
-
-    @Override
-    public PedidoResponse buscarPorId(Long id) {
-        log.info("estado=init metodo=PedidoServiceImpl.buscarPorId");
-        var pedido = pedidoRepository.findById(id).orElseThrow(() -> new PedidoExceptionHandler(
-                PEDIDO_NAO_ENCONTRADO, "buscarPorId", "/pedidos/{id}"));
-
-        log.info("estado=finish metodo=PedidoServiceImpl.buscarPorId");
-        return pedidoResponseAdapter.buildPedidoResponse(pedido);
-    }
-
-    @Override
-    public PedidoResponse atualizarStatus(Long id, PedidoStatus status) {
-        log.info("estado=init metodo=PedidoServiceImpl.atualizarStatus");
-        var pedido = pedidoRepository.findById(id).orElseThrow(() -> new PedidoExceptionHandler(
-                PEDIDO_NAO_ENCONTRADO, "atualizarStatus", "/pedidos/{id}/status/{status}"));
-
-        pedido.setStatus(status);
-
-        pedido = pedidoRepository.save(pedido);
-
-        log.info("estado=finish metodo=PedidoServiceImpl.atualizarStatus");
-        return pedidoResponseAdapter.buildPedidoResponse(pedido);
-    }
-
-    @Override
     public PagedModel<PedidoResponse> listarPorCliente(Long clienteId, int pagina, int tamanho) {
         log.info("estado=init metodo=PedidoServiceImpl.listarPorCliente");
         var pedidos = pedidoRepository.findAllByClienteId(clienteId, PageRequest.of(pagina, tamanho));

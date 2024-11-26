@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum EstadoEnum {
+public enum UfEnum {
 
     // Região Norte
     AM,

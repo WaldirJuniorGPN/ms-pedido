@@ -17,6 +17,6 @@ public interface ClientProduto {
     @GetMapping("/produtos/{id}")
     Optional<ProdutoResponse> buscarPorId(@PathVariable Long id);
 
-    @PatchMapping("/produtos/{id}/quantidade/{quantidade}")
+    @PatchMapping("/produtos/atualizar/estoque/{id}/{quantidade}")
     void atualizarQuantidadeEstoqueProduto(@PathVariable("id") Long id, @PathVariable("quantidade") int quantidade);
 }

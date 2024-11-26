@@ -28,7 +28,7 @@ public class PedidoExceptionAdviceHandler {
         if (e.getPedidoErrorCode().isExibirException()) {
             log.error("", e);
         } else {
-            log.error("Error: {}", errorResponse.getMensagem());
+            log.error("Error: {}", errorResponse);
         }
 
         return new ResponseEntity<>(errorResponse, e.getHttpStatus());
@@ -44,7 +44,7 @@ public class PedidoExceptionAdviceHandler {
             errors.put(fieldName, errorMessage);
         });
         var errorMessage = new ErrorResponse(LocalDateTime.now(), BAD_REQUEST, errors.toString());
-        log.error("Error: {}", errorMessage.getMensagem());
+        log.error("Error: {}", errorMessage);
         return new ResponseEntity<>(errorMessage, BAD_REQUEST);
     }
 
@@ -52,7 +52,7 @@ public class PedidoExceptionAdviceHandler {
     @ResponseStatus(NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleFeignException(FeignException.NotFound ex) {
         var errorMessage = new ErrorResponse(LocalDateTime.now(), NOT_FOUND, ex.getMessage());
-        log.error("Error: {}", errorMessage.getMensagem());
+        log.error("Error: {}", errorMessage);
         return new ResponseEntity<>(errorMessage, NOT_FOUND);
     }
 

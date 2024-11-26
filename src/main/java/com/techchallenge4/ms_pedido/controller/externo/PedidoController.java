@@ -26,34 +26,20 @@ import static org.springframework.http.HttpStatus.ACCEPTED;
 @RequestMapping("/pedidos")
 public class PedidoController {
 
+    private static final String HEADER_CLIENT_ID = "X-ID-USER";
+
     private final PedidoService pedidoService;
 
     @PostMapping
     @ResponseStatus(ACCEPTED)
-    public void recebe (@NotNull @Positive @RequestHeader("X-ID-USER") Long clientId, @Valid @RequestBody PedidoRequest request) {
+    public void recebe (@NotNull @Positive @RequestHeader(HEADER_CLIENT_ID) Long clientId, @Valid @RequestBody PedidoRequest request) {
 
         pedidoService.recebe(clientId, request);
 
     }
 
-//    @GetMapping
-//    public ResponseEntity<PagedModel<PedidoResponse>> listarTodos(@RequestParam(defaultValue = "0") int pagina,
-//                                                                  @RequestParam(defaultValue = "10") int tamanho) {
-//        var pedidosResponse = pedidoService.listarTodos(pagina, tamanho);
-//
-//        return ResponseEntity.ok(pedidosResponse);
-//    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<PedidoResponse> buscarPorId(@PathVariable Long id) {
-
-        var pedidoResponse = pedidoService.buscarPorId(id);
-
-        return ResponseEntity.ok(pedidoResponse);
-    }
-
-    @GetMapping("/cliente/{clienteId}")
-    public ResponseEntity<PagedModel<PedidoResponse>> listarPorCliente(@PathVariable Long clienteId,
+    @GetMapping("/cliente")
+    public ResponseEntity<PagedModel<PedidoResponse>> listarPorCliente(@NotNull @Positive @RequestHeader(HEADER_CLIENT_ID) Long clienteId,
                                                                        @RequestParam(defaultValue = "0") int pagina,
                                                                        @RequestParam(defaultValue = "10") int tamanho) {
 

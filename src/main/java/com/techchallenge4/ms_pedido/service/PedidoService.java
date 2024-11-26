@@ -3,7 +3,8 @@ package com.techchallenge4.ms_pedido.service;
 
 import com.techchallenge4.ms_pedido.controller.request.PedidoRequest;
 import com.techchallenge4.ms_pedido.controller.response.PedidoResponse;
-import com.techchallenge4.ms_pedido.model.enums.EstadoEnum;
+import com.techchallenge4.ms_pedido.model.dto.PedidoDTO;
+import com.techchallenge4.ms_pedido.model.enums.UfEnum;
 import com.techchallenge4.ms_pedido.model.enums.PedidoStatus;
 import org.springframework.data.web.PagedModel;
 
@@ -11,9 +12,7 @@ import java.util.List;
 
 public interface PedidoService {
 
-    void salvar(PedidoRequest request);
-
-    PagedModel<PedidoResponse> listarTodos(int pagina, int tamanho);
+    void salvar(PedidoDTO pedidoDTO);
 
     PedidoResponse buscarPorId(Long id);
 
@@ -23,5 +22,5 @@ public interface PedidoService {
 
     void recebe(Long clienteId, PedidoRequest request);
 
-    List<PedidoResponse> listarPedidosPorStatusEUf(PedidoStatus status, EstadoEnum uf);
+    List<PedidoResponse> listarPedidosPorStatusEUf(PedidoStatus status, UfEnum uf);
 }

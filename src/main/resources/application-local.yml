@@ -1,7 +1,7 @@
 spring:
 
   datasource:
-    url: jdbc:mysql://localhost:3306/pedido
+    url: jdbc:postgresql://localhost:5432/pedidos
     username: user
     password: admin
   jpa:

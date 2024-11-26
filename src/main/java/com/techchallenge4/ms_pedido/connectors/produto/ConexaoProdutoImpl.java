@@ -23,8 +23,7 @@ public class ConexaoProdutoImpl implements ConexaoProduto {
     @Override
     public ProdutoResponse buscarProdutoPorId(Long id) {
         try {
-            return clientProduto.buscarPorId(id).orElseThrow(() -> new PedidoExceptionHandler(
-                    PRODUTO_NAO_ENCONTRADO, "buscarProdutoPorId", ROOT_PATH + id));
+            return clientProduto.buscarPorId(id).get();
         } catch (FeignException.NotFound e) {
             log.error("Produto não encontrado. Message = {}", e.getMessage());
             throw new PedidoExceptionHandler(PRODUTO_NAO_ENCONTRADO, "buscarProdutoPorId", ROOT_PATH + id);

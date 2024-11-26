@@ -48,8 +48,4 @@ public class Pedido {
     @OneToOne
     private Endereco endereco;
 
-    public Pedido (Long id) {
-        this.id = id;
-    }
-
 }

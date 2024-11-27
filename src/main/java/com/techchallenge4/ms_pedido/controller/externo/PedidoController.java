@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -45,6 +47,14 @@ public class PedidoController {
         var pedidosResponse = pedidoService.listarPorCliente(clienteId, pagina, tamanho);
 
         return ResponseEntity.ok(pedidosResponse);
+    }
+
+    @PatchMapping("/{id}/cancelar")
+    public ResponseEntity<PedidoResponse> cancelar(@PathVariable Long id,
+                                                   @NotNull @Positive @RequestHeader(HEADER_CLIENT_ID) Long clientId) {
+        var pedidoResponse = pedidoService.cancelar(id, clientId);
+
+        return ResponseEntity.ok(pedidoResponse);
     }
 
 }

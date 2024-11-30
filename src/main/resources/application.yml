@@ -9,18 +9,16 @@ spring:
   application:
     name: ms-pedido
 
-  profiles:
-    active: "local"
-
   datasource:
     url: jdbc:postgresql://${DB_HOST}/pedido
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
-      ddl-auto: update
+      ddl-auto: create-drop
 
   rabbitmq:
     host: ${RABBITMQ_HOST}

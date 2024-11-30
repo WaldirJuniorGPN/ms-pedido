@@ -4,24 +4,49 @@
    
 O Microsserviço de Pedidos faz parte de um sistema de gerenciamento de pedidos baseado em arquitetura de microsserviços, utilizando o ecossistema Spring. Este serviço centraliza o processamento de todos os pedidos, desde a criação até a finalização.
 
-## Funcionalidades
-
-- **CRUD de Pedidos**: Gerencia operações de criação, leitura e atualização de pedidos.
-- **Persistência de Dados**: Utiliza Spring Data JPA para manipulação de dados de pedidos em um banco de dados relacional.
-- **Comunicação Assíncrona**: Usa Spring Cloud Stream para comunicação baseada em eventos com outros microsserviços.
-
 ## Tecnologias Utilizadas
 
-- **Spring Boot**: Framework para desenvolvimento e configuração do microsserviço.
-- **Spring Data JPA**: Facilita o gerenciamento de dados e operações CRUD no banco de dados relacional.
-- **Spring Cloud Stream**: Implementa a comunicação assíncrona com outros serviços por meio de mensagens/eventos.
-  
+- **[Java 21](https://docs.oracle.com/en/java/javase/21/)**: Linguagem de programação principal.
+- **[Spring Boot 3.3.4](https://docs.spring.io/spring-boot/3.3/)**: Framework para a construção de aplicações Java, facilitando o desenvolvimento de microsserviços.
+- **[Spring Data JPA](https://spring.io/projects/spring-data-jpa)**: Facilita o gerenciamento de dados e operações CRUD no banco de dados relacional.
+- **[Spring Cloud](https://spring.io/projects/spring-cloud)**: Implementa a comunicação assíncrona por meio de mensagens/eventos.
+- **MySQL**: Banco de dados relacional utilizado para persistência dos dados de pedidos.
+- **Lombok**: Redução de código boilerplate com anotações para getters, setters e outras funcionalidades.
+- **OpenAPI (Springdoc)**: Documentação e interface gráfica para explorar as APIs REST.
+- **JUnit 5 e Mockito**: Frameworks para testes unitários e mocks.
+- **Docker**: Containerização da aplicação para facilitar o deploy em diferentes ambientes.
+
+## Funcionalidades
+- Cadastro de pedidos.
+- Atualização do status do pedido.
+- Consulta de informações de pedidos.
+- Cancelamento de pedidos. .
+- Comunicação assíncrona.
+- Integração com microsserviço de clientes.
+- Integração com microsserviço de produtos.\
+
+## Estrutura de pastas do Projeto
+- adapter: Classes que convertem objetos de transferência de dados em entidades e vice-versa.
+- config: Classes de configuração da aplicação.
+- connectors: Classes que implementam a comunicação com outros microsserviços.
+- controller: Classes que definem os endpoints da API REST.
+  - externo: Classes que definem os endpoints para o cliente.
+  - interno: Classes que definem os endpoints entre mocrosserviços.
+- exception: Classes que representam exceções personalizadas.
+- listener: Classes que implementam listeners para eventos assíncronos.
+- model: Classes que representam as entidades do domínio.
+- repository: Classes que implementam a comunicação com o banco de dados.
+- service: Classes que implementam a lógica de negócio.
+  - dto: Classes que representam os objetos de transferência de dados.
+  - enums: Classes que representam os tipos enumerados.
+
 ## Como Executar o Projeto
 
 ### Pré-requisitos
 
 - Java 21+
-- Docker (opcional, se preferir usar contêineres para o banco de dados)
+- Maven
+- Docker (para rodar o MySQL e o rabbitmq, opcional)
 
 ### Passos
 
@@ -36,14 +61,25 @@ O Microsserviço de Pedidos faz parte de um sistema de gerenciamento de pedidos 
    ```bash
    cd ms-pedidos
    ```
+   
+3. Certifique-se de que o MySQL e o RabbitMQ estão rodando. Caso prefira, utilize Docker para rodar os containers:
 
-3. Execute o projeto com o Maven:
+   ```bash
+   docker-compose up -d
+   ```
+
+
+4. Baixe as dependências do projeto:
+
+   ```bash
+   mvn clean install
+   ```
+
+5. Execute o projeto com o Maven:
 
    ```bash
    mvn spring-boot:run
    ```
-
-4. Se preferir, utilize Docker para rodar o banco de dados relacional (MySQL, por exemplo).
 
 ## Testes
 

@@ -1,9 +1,5 @@
 spring:
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/postech_ecommerce
-    username: user
-    password: admin
   jpa:
     hibernate:
       ddl-auto: update

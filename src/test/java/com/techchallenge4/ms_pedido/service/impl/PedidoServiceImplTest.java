@@ -8,7 +8,6 @@ import com.techchallenge4.ms_pedido.connectors.produto.ConexaoProduto;
 import com.techchallenge4.ms_pedido.controller.request.PedidoRequest;
 import com.techchallenge4.ms_pedido.exception.PedidoErrorCode;
 import com.techchallenge4.ms_pedido.exception.PedidoExceptionHandler;
-import com.techchallenge4.ms_pedido.mockDados.PedidoResponseMock;
 import com.techchallenge4.ms_pedido.model.Endereco;
 import com.techchallenge4.ms_pedido.model.Pedido;
 import com.techchallenge4.ms_pedido.model.dto.PedidoDTO;
@@ -23,7 +22,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +34,13 @@ import static com.techchallenge4.ms_pedido.mockDados.PedidoMock.getPedidoPendent
 import static com.techchallenge4.ms_pedido.mockDados.PedidoRequestMock.getPedidoRequestCliente2;
 import static com.techchallenge4.ms_pedido.mockDados.PedidoRequestMock.getPedidoRequestQuantidade1;
 import static com.techchallenge4.ms_pedido.mockDados.PedidoRequestMock.getPedidoRequestQuantidade2;
+import static com.techchallenge4.ms_pedido.mockDados.PedidoResponseMock.getPedidoResponseCancelado;
 import static com.techchallenge4.ms_pedido.mockDados.PedidoResponseMock.getPedidoResponsePendente1;
 import static com.techchallenge4.ms_pedido.mockDados.PedidoResponseMock.getPedidoResponsePendente2;
 import static com.techchallenge4.ms_pedido.mockDados.ProdutoResponseMock.getProdutoResponse;
 import static com.techchallenge4.ms_pedido.mockDados.ProdutoResponseMock.getProdutoResponseQuantidade1;
 import static com.techchallenge4.ms_pedido.mockDados.ProdutoResponseMock.getProdutoResponseQuantidadeZero;
-import static com.techchallenge4.ms_pedido.model.enums.PedidoStatus.EM_ROTA;
+import static com.techchallenge4.ms_pedido.model.enums.PedidoStatus.CANCELADA;
 import static com.techchallenge4.ms_pedido.model.enums.PedidoStatus.PENDENTE;
 import static com.techchallenge4.ms_pedido.model.enums.UfEnum.PE;
 import static java.util.Optional.empty;
@@ -351,6 +350,43 @@ class PedidoServiceImplTest {
         assertThrows(RuntimeException.class, () -> pedidoService.listarPorCliente(1L, 0, 10));
 
         verify(pedidoRepository, times(1)).findAllByClienteId(1L, PageRequest.of(0, 10));
+    }
+
+    @Test
+    void testaCancelarPedidoComSucesso() {
+        var id = 1L;
+        var clienteId = 1L;
+        var pedido = getPedidoPendente1();
+        var pedidoSalvo = getPedidoPendente1();
+        pedidoSalvo.setStatus(CANCELADA);
+
+        when(pedidoRepository.findByIdAndClienteId(id, clienteId)).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.save(pedido)).thenReturn(pedidoSalvo);
+        when(pedidoResponseAdapter.buildPedidoResponse(pedido)).thenReturn(getPedidoResponseCancelado());
+
+        var resultado = pedidoService.cancelar(id, clienteId);
+
+        assertEquals(CANCELADA, resultado.status());
+
+        verify(pedidoRepository, times(1)).findByIdAndClienteId(id, clienteId );
+        verify(pedidoRepository, times(1)).save(pedido);
+        verify(pedidoResponseAdapter, times(1)).buildPedidoResponse(pedido);
+    }
+
+    @Test
+    void testaCancelarPedidoComErro() {
+        var id = 1L;
+        var clienteId = 1L;
+
+        when(pedidoRepository.findByIdAndClienteId(id, clienteId)).thenReturn(empty());
+
+        var resultado = assertThrows(PedidoExceptionHandler.class, () -> pedidoService.cancelar(id, clienteId));
+
+        assertEquals("Pedido não encontrado", resultado.getMessage());
+
+        verify(pedidoRepository, times(1)).findByIdAndClienteId(id, clienteId);
+        verify(pedidoRepository, never()).save(any(Pedido.class));
+        verify(pedidoResponseAdapter, never()).buildPedidoResponse(any(Pedido.class));
     }
 
 }

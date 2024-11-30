@@ -3,15 +3,13 @@ package com.techchallenge4.ms_pedido.service.impl;
 import com.techchallenge4.ms_pedido.adapter.endereco.EnderecoAdapter;
 import com.techchallenge4.ms_pedido.adapter.pedido.PedidoAdapter;
 import com.techchallenge4.ms_pedido.adapter.pedidoResponse.PedidoResponseAdapter;
+import com.techchallenge4.ms_pedido.connectors.cliente.ConexaoCliente;
 import com.techchallenge4.ms_pedido.connectors.produto.ConexaoProduto;
 import com.techchallenge4.ms_pedido.connectors.produto.response.ProdutoResponse;
-import com.techchallenge4.ms_pedido.connectors.cliente.ConexaoCliente;
 import com.techchallenge4.ms_pedido.controller.request.PedidoRequest;
 import com.techchallenge4.ms_pedido.controller.response.PedidoResponse;
 import com.techchallenge4.ms_pedido.exception.PedidoExceptionHandler;
 import com.techchallenge4.ms_pedido.model.dto.PedidoDTO;
-import com.techchallenge4.ms_pedido.model.enums.UfEnum;
-import com.techchallenge4.ms_pedido.model.enums.PedidoStatus;
 import com.techchallenge4.ms_pedido.repository.EnderecoRepository;
 import com.techchallenge4.ms_pedido.repository.PedidoRepository;
 import com.techchallenge4.ms_pedido.service.PedidoService;
@@ -23,12 +21,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.techchallenge4.ms_pedido.config.Environment.PEDIDO_QUEUE_CRIAR;
 import static com.techchallenge4.ms_pedido.exception.PedidoErrorCode.CLIENTES_DIVERGENTES;
 import static com.techchallenge4.ms_pedido.exception.PedidoErrorCode.PEDIDO_NAO_ENCONTRADO;
 import static com.techchallenge4.ms_pedido.exception.PedidoErrorCode.PRODUTO_SEM_ESTOQUE;
+import static com.techchallenge4.ms_pedido.model.enums.PedidoStatus.CANCELADA;
 
 @Slf4j
 @Service
@@ -56,7 +53,7 @@ public class PedidoServiceImpl implements PedidoService {
     public void recebe(Long clienteId, PedidoRequest request) {
         log.info("estado=init metodo=PedidoServiceImpl.recebe");
 
-        validaClienteLogado(clienteId, request);
+        validaClienteLogado(clienteId, request, "recebe");
 
         var clienteResponse = conexaoCliente.buscarClientePorId(request.clienteId());
 
@@ -98,9 +95,23 @@ public class PedidoServiceImpl implements PedidoService {
         return new PagedModel<>(pedidoResponseAdapter.buildPedidoResponsePaginado(pedidos));
     }
 
-    private void validaClienteLogado(Long clienteId, PedidoRequest request) {
+    @Override
+    public PedidoResponse cancelar(Long id, Long clientId) {
+        log.info("estado=init metodo=PedidoServiceImpl.cancelar");
+
+        var pedido = pedidoRepository.findByIdAndClienteId(id, clientId).orElseThrow(
+                () -> new PedidoExceptionHandler(PEDIDO_NAO_ENCONTRADO, "cancelar", "/pedidos"));
+        pedido.setStatus(CANCELADA);
+
+        pedido = pedidoRepository.save(pedido);
+
+        log.info("estado=finish metodo=PedidoServiceImpl.cancelar");
+        return pedidoResponseAdapter.buildPedidoResponse(pedido);
+    }
+
+    private void validaClienteLogado(Long clienteId, PedidoRequest request, String metodo) {
         if (!clienteId.equals(request.clienteId())) {
-            throw new PedidoExceptionHandler(CLIENTES_DIVERGENTES, "recebe", "/pedidos");
+            throw new PedidoExceptionHandler(CLIENTES_DIVERGENTES, metodo, "/pedidos");
         }
     }
 

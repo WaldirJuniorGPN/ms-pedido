@@ -1,6 +1,20 @@
-version: '3.7'
+version: '3.8'
 
 services:
+
+  app:
+    container_name: api-pedido
+    build:
+      context: .
+    ports:
+      - "8082:8082"
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-pedido:5432/pedido
+        SPRING_RABBITMQ_HOST: rabbitmq
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -10,6 +24,22 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: admin
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres-pedido
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: pedidos
+      TZ: "America/Fortaleza"
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+
+volumes:
+  data:
 
 networks:
   default:

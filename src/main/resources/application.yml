@@ -10,7 +10,7 @@ spring:
     name: ms-pedido
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST}/pedido
+    url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
@@ -30,7 +30,7 @@ spring:
         retry:
           enabled: true
           max-attempts: 10
-          initial-interval: 1000
+          initial-interval: 5000
           multiplier: 2
     virtual-host: ${RABBITMQ_USER}
 

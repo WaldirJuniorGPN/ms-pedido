@@ -2,6 +2,10 @@ server:
   port: 8082
 
 spring:
+  sql:
+    init:
+      mode: always
+
   application:
     name: ms-pedido
 
@@ -9,7 +13,7 @@ spring:
     active: "local"
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST}}/pedidos
+    url: jdbc:postgresql://${DB_HOST}/pedido
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
@@ -30,6 +34,7 @@ spring:
           max-attempts: 10
           initial-interval: 1000
           multiplier: 2
+    virtual-host: ${RABBITMQ_USER}
 
 cliente:
   url: http://localhost:8080

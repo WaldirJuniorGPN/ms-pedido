@@ -1,16 +1,12 @@
 # Microsserviço de Pedidos
 
 ## Descrição
-
-O Microsserviço de Pedidos faz parte de um sistema de gerenciamento de pedidos baseado em arquitetura de microsserviços, utilizando o ecossistema Spring. Este serviço centraliza o processamento de todos os pedidos, desde a criação até a finalização, incluindo a coordenação com o microsserviço de logística para garantir a entrega eficiente dos produtos.
-
-Além disso, o serviço lida com o processamento de pagamentos (se aplicável), validação de dados dos pedidos e comunicação assíncrona com outros microsserviços, garantindo um fluxo de pedidos eficaz e resiliente.
+   
+O Microsserviço de Pedidos faz parte de um sistema de gerenciamento de pedidos baseado em arquitetura de microsserviços, utilizando o ecossistema Spring. Este serviço centraliza o processamento de todos os pedidos, desde a criação até a finalização.
 
 ## Funcionalidades
 
-- **CRUD de Pedidos**: Gerencia operações de criação, leitura, atualização e exclusão de pedidos.
-- **Processamento de Pagamentos**: Integração com serviços de pagamento (se necessário) para validação e confirmação de pagamentos.
-- **Coordenar Logística**: Coordena com o microsserviço de logística para gerenciar a entrega dos produtos ao cliente.
+- **CRUD de Pedidos**: Gerencia operações de criação, leitura e atualização de pedidos.
 - **Persistência de Dados**: Utiliza Spring Data JPA para manipulação de dados de pedidos em um banco de dados relacional.
 - **Comunicação Assíncrona**: Usa Spring Cloud Stream para comunicação baseada em eventos com outros microsserviços.
 
